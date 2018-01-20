@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Parser.cpp" />
     <ClCompile Include="src\IDVParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="incl\IDVParser.h" />
+    <ClInclude Include="Parser.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
