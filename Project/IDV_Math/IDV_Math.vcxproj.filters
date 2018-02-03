@@ -21,7 +21,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="IDV_Maths.h">
+    <ClInclude Include="incl\IDV_Maths.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

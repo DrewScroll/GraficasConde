@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "IDV_Maths.h"
+#include "incl\IDV_Maths.h"
 
 void XMatViewLookAtLH(XMATRIX44 &mpout, const XVECTOR3 &camPos, const XVECTOR3 &lookAt, const XVECTOR3 &upAxis) {
 	XVECTOR3 zaxe = lookAt - camPos;
@@ -178,9 +178,21 @@ void XVec3Normalize(XVECTOR3 &output, const XVECTOR3 &v)
 	output = { v.x*inv,v.y*inv,v.z*inv,v.w*inv };
 }
 
-XVECTOR3 operator*(float, const XVECTOR3 &)
+void PrintMatrix(const XMATRIX44 & Matrix)
 {
-	return XVECTOR3();
+	std::cout << "( " << Matrix.m11 << ", " << Matrix.m12 << ", " << Matrix.m13 << ", " << Matrix.m14 << ")" << std::endl;
+	std::cout << "( " << Matrix.m21 << ", " << Matrix.m22 << ", " << Matrix.m23 << ", " << Matrix.m24 << ")" << std::endl;
+	std::cout << "( " << Matrix.m31 << ", " << Matrix.m32 << ", " << Matrix.m33 << ", " << Matrix.m34 << ")" << std::endl;
+	std::cout << "( " << Matrix.m41 << ", " << Matrix.m42 << ", " << Matrix.m43 << ", " << Matrix.m44 << ")" << std::endl;
+}
+
+XVECTOR3 operator*(float f, const XVECTOR3 &v)
+{
+	XVECTOR3 Res;
+	Res.x = v.x*f;
+	Res.y = v.y*f;
+	Res.z = v.z*f;
+	return Res;
 }
 
 void XMATRIX44::Inverse(XMATRIX44 *o) {
@@ -244,31 +256,48 @@ void XMATRIX44::Inverse(XMATRIX44 *o) {
 
 void XMatMultiply(XMATRIX44 &output, const XMATRIX44 &inputA, const XMATRIX44 &inputB)
 {
-	for (int j = 0; j < 4; ++j)
-		for (int i = 0; i < 4; ++i)
-			for (int k = 0; k < 4; ++k)
-				output.m[j][i] += inputA.m[j][k] * inputB.m[k][i];
+	memset(&output.m[0], 0, sizeof(output));
+	output.m11 = (inputA.m11*inputB.m11 + inputA.m12*inputB.m21 + inputA.m13*inputB.m31 + inputA.m14*inputB.m41);
+	output.m12 = (inputA.m11*inputB.m12 + inputA.m12*inputB.m22 + inputA.m13*inputB.m32 + inputA.m14*inputB.m42);
+	output.m13 = (inputA.m11*inputB.m13 + inputA.m12*inputB.m23 + inputA.m13*inputB.m33 + inputA.m14*inputB.m43);
+	output.m14 = (inputA.m11*inputB.m14 + inputA.m12*inputB.m24 + inputA.m13*inputB.m34 + inputA.m14*inputB.m44);
+
+	output.m21 = (inputA.m21*inputB.m11 + inputA.m22*inputB.m21 + inputA.m23*inputB.m31 + inputA.m24*inputB.m41);
+	output.m22 = (inputA.m21*inputB.m12 + inputA.m22*inputB.m22 + inputA.m23*inputB.m32 + inputA.m24*inputB.m42);
+	output.m23 = (inputA.m21*inputB.m13 + inputA.m22*inputB.m23 + inputA.m23*inputB.m33 + inputA.m24*inputB.m43);
+	output.m24 = (inputA.m21*inputB.m14 + inputA.m22*inputB.m24 + inputA.m23*inputB.m34 + inputA.m24*inputB.m44);
+	
+	output.m31 = (inputA.m31*inputB.m11 + inputA.m32*inputB.m21 + inputA.m33*inputB.m31 + inputA.m34*inputB.m41);
+	output.m32 = (inputA.m31*inputB.m12 + inputA.m32*inputB.m22 + inputA.m33*inputB.m32 + inputA.m34*inputB.m42);
+	output.m33 = (inputA.m31*inputB.m13 + inputA.m32*inputB.m23 + inputA.m33*inputB.m33 + inputA.m34*inputB.m43);
+	output.m34 = (inputA.m31*inputB.m14 + inputA.m32*inputB.m24 + inputA.m33*inputB.m34 + inputA.m34*inputB.m44);
+
+	output.m41 = (inputA.m41*inputB.m11 + inputA.m42*inputB.m21 + inputA.m43*inputB.m31 + inputA.m44*inputB.m41);
+	output.m42 = (inputA.m41*inputB.m12 + inputA.m42*inputB.m22 + inputA.m43*inputB.m32 + inputA.m44*inputB.m42);
+	output.m43 = (inputA.m41*inputB.m13 + inputA.m42*inputB.m23 + inputA.m43*inputB.m33 + inputA.m44*inputB.m43);
+	output.m44 = (inputA.m41*inputB.m14 + inputA.m42*inputB.m24 + inputA.m43*inputB.m34 + inputA.m44*inputB.m44);
+
 }
 
 void XMatTranslation(XMATRIX44 &output, const float &inputX, const float &inputY, const float &inputZ)
 {
-	output.m14 = inputX;
-	output.m24 = inputY;
-	output.m34 = inputZ;
+	output.m41 += inputX;
+	output.m42 += inputY;
+	output.m43 += inputZ;
 }
 
 void XMatTranslation(XMATRIX44 &output, XVECTOR3 &input)
 {
-	output.m14 = input.x;
-	output.m24 = input.y;
-	output.m34 = input.z;
+	output.m41 += input.x;
+	output.m42 += input.y;
+	output.m43 += input.z;
 }
 
 void XMatScaling(XMATRIX44 &output, const float &inputX, const float &inputY, const float &inputZ)
 {
-	output.m11 = inputX;
-	output.m22 = inputY;
-	output.m33 = inputZ;
+	output.m11 *= inputX;
+	output.m22 *= inputY;
+	output.m33 *= inputZ;
 }
 
 void XMatRotationXLH(XMATRIX44 &output, const float &theta)
@@ -327,49 +356,57 @@ void XMatIdentity(XMATRIX44 &output)
 			output.m[j][i] = (i == j) ? 1.0f : 0.0f;
 }
 
-XVECTOR2::operator float*()
-{
-	//TODO 
-}
-
-XVECTOR2::operator const float*() const
-{
-	//TODO
-}
+//XVECTOR2::operator float*()
+//{
+//	//TODO 
+//}
+//
+//XVECTOR2::operator const float*() const
+//{
+//	//TODO
+//}
 
 XVECTOR2 & XVECTOR2::operator+=(const XVECTOR2 &v)
 {
-	this->x = this->x + v.x;
-	this->y = this->y + v.y;
+	XVECTOR2 Res;
+	Res.x = this->x + v.x;
+	Res.y = this->y + v.y;
+	return Res;
 }
 
 XVECTOR2 & XVECTOR2::operator-=(const XVECTOR2 &v)
 {
-	this->x = this->x - v.x;
-	this->y = this->y - v.y;
+	XVECTOR2 Res;
+	Res.x = this->x - v.x;
+	Res.y = this->y - v.y;
+	return Res;
 }
 
 XVECTOR2 & XVECTOR2::operator*=(float f)
 {
-	this->x = this->x*f;
-	this->y = this->y*f;
+	XVECTOR2 Res;
+	Res.x = this->x*f;
+	Res.y = this->y*f;
+	return Res;
 }
 
 XVECTOR2 & XVECTOR2::operator/=(float f)
 {
-	this->x = this->x / f;;
-	this->y = this->y / f;
+	XVECTOR2 Res;
+	Res.x = this->x / f;;
+	Res.y = this->y / f;
+	return Res;
 }
 
-XVECTOR2 XVECTOR2::operator+() const
-{
-	return XVECTOR2();
-}
-
-XVECTOR2 XVECTOR2::operator-() const
-{
-	return XVECTOR2();
-}
+//XVECTOR2 XVECTOR2::operator+() const
+//{
+//	return XVECTOR2();
+//}
+//
+//XVECTOR2 XVECTOR2::operator-() const
+//{
+//	return XVECTOR2();
+//}
 
 XVECTOR2 XVECTOR2::operator+(const XVECTOR2 &v) const
 {
@@ -431,51 +468,60 @@ float XVECTOR2::Length()
 	return sqrt((this->x*this->x)+(this->y*this->y));
 }
 
-XVECTOR3::operator float*()
-{
-}
-
-XVECTOR3::operator const float*() const
-{
-}
+//XVECTOR3::operator float*()
+//{
+//}
+//
+//XVECTOR3::operator const float*() const
+//{
+//}
 
 XVECTOR3 & XVECTOR3::operator+=(const XVECTOR3 &v)
 {
-	this->x = this->x + v.x;
-	this->y = this->y + v.y;
-	this->z = this->z + v.z;
+	XVECTOR3 Res;
+	Res.x = this->x + v.x;
+	Res.y = this->y + v.y;
+	Res.z = this->z + v.z;
+	return Res;
 }
 
 XVECTOR3 & XVECTOR3::operator-=(const XVECTOR3 &v)
 {
-	this->x = this->x - v.x;
-	this->y = this->y - v.y;
-	this->z = this->z - v.z;
+	XVECTOR3 Res;
+	Res.x = this->x - v.x;
+	Res.y = this->y - v.y;
+	Res.z = this->z - v.z;
+	return Res;
+
 }
 
 XVECTOR3 & XVECTOR3::operator*=(float f)
 {
-	this->x = this->x*f;
-	this->y = this->y*f;
-	this->z = this->z*f;
+	XVECTOR3 Res;
+	Res.x = this->x*f;
+	Res.y = this->y*f;
+	Res.z = this->z*f;	
+	return Res;
 }
 
 XVECTOR3 & XVECTOR3::operator/=(float f)
 {
-	this->x = this->x / f;
-	this->y = this->y / f;
-	this->z = this->z / f;
+	XVECTOR3 Res;
+	Res.x = this->x / f;
+	Res.y = this->y / f;
+	Res.z = this->z / f;
+	return Res;
 }
 
-XVECTOR3 XVECTOR3::operator+() const
-{
-	return XVECTOR3();
-}
-
-XVECTOR3 XVECTOR3::operator-() const
-{
-	return XVECTOR3();
-}
+//XVECTOR3 XVECTOR3::operator+() const
+//{
+//	return XVECTOR3();
+//}
+//
+//XVECTOR3 XVECTOR3::operator-() const
+//{
+//	return XVECTOR3();
+//}
 
 XVECTOR3 XVECTOR3::operator+(const XVECTOR3 &v) const
 {
@@ -553,10 +599,125 @@ float XVECTOR3::Length()
 	return sqrt((this->x*this->x)+(this->y*this->y)+(this->z*this->z));
 }
 
-XMATRIX44_64::XMATRIX44_64()
+//XMATRIX44_64::XMATRIX44_64()
+//{
+//}
+
+//XMATRIX44_64::XMATRIX44_64(XMATRIX44 * Mi)
+//{
+//	for (int j = 0; j < 4; ++j)
+//		for (int i = 0; i < 4; ++i)
+//			this->m[j][i] = Mi->m[j][i];
+//}
+
+XMATRIX44 & XMATRIX44::operator*=(const XMATRIX44 &M)
 {
+	XMATRIX44 Res;
+	XMatMultiply(Res, *this, M);
+	return Res;
 }
 
-XMATRIX44_64::XMATRIX44_64(XMATRIX44 * i)
+XMATRIX44 & XMATRIX44::operator+=(const XMATRIX44 &M)
 {
+	XMATRIX44 Res;
+	for (int j = 0; j < 4; ++j)
+		for (int i = 0; i < 4; ++i)
+				Res.m[j][i] = this->m[j][i] + M.m[j][i];
+	return Res;
+	// TODO: insertar una instrucción return aquí
+}
+
+XMATRIX44 & XMATRIX44::operator-=(const XMATRIX44 &M)
+{
+	XMATRIX44 Res;
+	for (int j = 0; j < 4; ++j)
+		for (int i = 0; i < 4; ++i)
+			Res.m[j][i] = this->m[j][i] - M.m[j][i];
+	return Res;
+	// TODO: insertar una instrucción return aquí
+}
+
+XMATRIX44 & XMATRIX44::operator*=(float f)
+{
+	XMATRIX44 Res;
+	for (int j = 0; j < 4; ++j)
+		for (int i = 0; i < 4; ++i)
+			Res.m[j][i] = this->m[j][i] * f;
+	return Res;
+	// TODO: insertar una instrucción return aquí
+}
+
+XMATRIX44 & XMATRIX44::operator/=(float f)
+{
+	XMATRIX44 Res;
+	for (int j = 0; j < 4; ++j)
+		for (int i = 0; i < 4; ++i)
+			Res.m[j][i] = this->m[j][i] / f;
+	return Res;
+	// TODO: insertar una instrucción return aquí
+}
+
+XMATRIX44 XMATRIX44::operator*(const XMATRIX44 &M) const
+{
+	XMATRIX44 Res;
+	XMatMultiply(Res, *this, M);
+	return Res;
+}
+
+XMATRIX44 XMATRIX44::operator+(const XMATRIX44 &M) const
+{
+	XMATRIX44 Res;
+	for (int j = 0; j < 4; ++j)
+		for (int i = 0; i < 4; ++i)
+			Res.m[j][i] = this->m[j][i] + M.m[j][i];
+	return Res;
+}
+
+XMATRIX44 XMATRIX44::operator-(const XMATRIX44 &M) const
+{
+	XMATRIX44 Res;
+	for (int j = 0; j < 4; ++j)
+		for (int i = 0; i < 4; ++i)
+			Res.m[j][i] = this->m[j][i] - M.m[j][i];
+	return Res;
+}
+
+XMATRIX44 XMATRIX44::operator*(float f) const
+{
+	XMATRIX44 Res;
+	for (int j = 0; j < 4; ++j)
+		for (int i = 0; i < 4; ++i)
+			Res.m[j][i] = this->m[j][i] * f;
+	return Res;
+}
+
+XMATRIX44 XMATRIX44::operator/(float f) const
+{
+	XMATRIX44 Res;
+	for (int j = 0; j < 4; ++j)
+		for (int i = 0; i < 4; ++i)
+			Res.m[j][i] = this->m[j][i] / f;
+	return Res;
+}
+
+bool XMATRIX44::operator==(const XMATRIX44 &M) const
+{
+	for (int j = 0; j < 4; ++j)
+		for (int i = 0; i < 4; ++i)
+			if (this->m[j][i] != M.m[j][i])
+				return false;
+	return true;
+}
+
+bool XMATRIX44::operator!=(const XMATRIX44 &M) const
+{
+	bool right = true;
+	for (int j = 0; j < 4; ++j)
+		for (int i = 0; i < 4; ++i)
+			if (this->m[j][i] == M.m[j][i])
+				right = false;
+	if (right)
+		return true;
+	if(!right)
+		return false;
 }
