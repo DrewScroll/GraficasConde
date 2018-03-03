@@ -3,6 +3,8 @@
 
 #include <IDVDefs.h>
 
+#include <IDVVideo/IDVBaseDriver.h>
+
 class IDVBaseWindow;
 
 class IDVBaseApplication {
@@ -24,7 +26,7 @@ public:
 
 class IDVBaseWindow {
 public:
-	IDVBaseWindow(IDVBaseApplication *pApplication) : m_pApplication(pApplication) {}
+	IDVBaseWindow(IDVBaseApplication *pApplication) : m_pVideoDriver(0), m_pApplication(pApplication) {}
 
 	virtual void InitGlobalVars() = 0;
 	virtual void OnCreateApplication() = 0;
@@ -32,6 +34,7 @@ public:
 	virtual void UpdateApplication() = 0;
 	virtual void ProcessInput() = 0;
 
+	IDVBaseDriver			*m_pVideoDriver;
 	IDVBaseApplication	*m_pApplication;
 	bool	m_bAlive;
 };

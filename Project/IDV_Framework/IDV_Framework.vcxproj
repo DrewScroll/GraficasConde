@@ -19,11 +19,38 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\IDVScene\D3DXMesh.cpp" />
+    <ClCompile Include="src\IDVScene\GLMesh.cpp" />
+    <ClCompile Include="src\IDVScene\IDVD3DQuad.cpp" />
+    <ClCompile Include="src\IDVScene\IDVGLQuad.cpp" />
+    <ClCompile Include="src\IDVScene\IDVPrimitiveInstance.cpp" />
+    <ClCompile Include="src\IDVScene\IDVPrimitiveManager.cpp" />
+    <ClCompile Include="src\IDVScene\IDVSceneProp.cpp" />
+    <ClCompile Include="src\IDVUtils\IDVUtils.cpp" />
+    <ClCompile Include="src\IDVVideo\IDVBaseDriver.cpp" />
+    <ClCompile Include="src\IDVVideo\IDVD3DXDriver.cpp" />
+    <ClCompile Include="src\IDVVideo\IDVD3DXShader.cpp" />
+    <ClCompile Include="src\IDVVideo\IDVGLDriver.cpp" />
+    <ClCompile Include="src\IDVVideo\IDVGLShader.cpp" />
     <ClCompile Include="src\IDVWindow\Win32\IDVWin32Manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="incl\IDVBase\IDVCoreBase.h" />
     <ClInclude Include="incl\IDVDefs.h" />
+    <ClInclude Include="incl\IDVScene\D3DXMesh.h" />
+    <ClInclude Include="incl\IDVScene\GLMesh.h" />
+    <ClInclude Include="incl\IDVScene\IDVD3DQuad.h" />
+    <ClInclude Include="incl\IDVScene\IDVGLQuad.h" />
+    <ClInclude Include="incl\IDVScene\IDVPrimitive.h" />
+    <ClInclude Include="incl\IDVScene\IDVPrimitiveInstance.h" />
+    <ClInclude Include="incl\IDVScene\IDVPrimitiveManager.h" />
+    <ClInclude Include="incl\IDVScene\IDVSceneProp.h" />
+    <ClInclude Include="incl\IDVUtils\IDVUtils.h" />
+    <ClInclude Include="incl\IDVVideo\IDVBaseDriver.h" />
+    <ClInclude Include="incl\IDVVideo\IDVD3DXDriver.h" />
+    <ClInclude Include="incl\IDVVideo\IDVD3DXShader.h" />
+    <ClInclude Include="incl\IDVVideo\IDVGLDriver.h" />
+    <ClInclude Include="incl\IDVVideo\IDVGLShader.h" />
     <ClInclude Include="incl\IDVWindow\IDVWin32Manager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -103,9 +130,9 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)incl\;$(SolutionDir)ThirdParty\SDL-1.2.14\include;$(SolutionDir)ThirdParty\OGLES2\pvr\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)incl\;$(SolutionDir)ThirdParty\SDL-1.2.14\include;$(SolutionDir)ThirdParty\glew-2.0.0\include;$(SolutionDir)IDV_Math\incl;$(SolutionDir)IDV_Parser\incl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,9 +145,9 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)incl\;$(SolutionDir)ThirdParty\SDL-1.2.14\include;$(SolutionDir)ThirdParty\OGLES2\pvr\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)incl\;$(SolutionDir)ThirdParty\SDL-1.2.14\include;$(SolutionDir)ThirdParty\glew-2.0.0\include;$(SolutionDir)IDV_Math\incl;$(SolutionDir)IDV_Parser\incl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,9 +162,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)incl\;$(SolutionDir)ThirdParty\SDL-1.2.14\include;$(SolutionDir)ThirdParty\OGLES2\pvr\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)incl\;$(SolutionDir)ThirdParty\SDL-1.2.14\include;$(SolutionDir)ThirdParty\glew-2.0.0\include;$(SolutionDir)IDV_Math\incl;$(SolutionDir)IDV_Parser\incl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,9 +181,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)incl\;$(SolutionDir)ThirdParty\SDL-1.2.14\include;$(SolutionDir)ThirdParty\OGLES2\pvr\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)incl\;$(SolutionDir)ThirdParty\SDL-1.2.14\include;$(SolutionDir)ThirdParty\glew-2.0.0\include;$(SolutionDir)IDV_Math\incl;$(SolutionDir)IDV_Parser\incl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
