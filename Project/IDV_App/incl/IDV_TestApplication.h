@@ -18,6 +18,7 @@ public:
 	PrimitiveManager *PrimitiveMgr;
 	PrimitiveInst	 QuadInst;
 	PrimitiveInst Mesh[10];
+	XMATRIX44 VP;
 };
 
 #endif

@@ -26,9 +26,9 @@ void IDVWin32Manager::OnCreateApplication() {
 	}
 
 
-//	m_pVideoDriver = new IDVGLDriver();
+	m_pVideoDriver = new IDVGLDriver();
 
-	m_pVideoDriver = new IDVD3DXDriver();
+	//m_pVideoDriver = new IDVD3DXDriver();
 	m_pVideoDriver->SetDimensions(width, height);
 
 	m_pVideoDriver->SetWindow(0);

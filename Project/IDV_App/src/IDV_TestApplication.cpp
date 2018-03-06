@@ -6,15 +6,17 @@ void IDVTestApplication::InitVars() {
 
 }
 
-void IDVTestApplication::CreateAssets() {
-	XMATRIX44 VP;
-	PrimitiveMgr->SetVP(&VP);
-	int indexMesh = PrimitiveMgr->CreateMesh("NuBatman.X");
-
+void IDVTestApplication::CreateAssets() 
+{
 	PrimitiveMgr = new PrimitiveManager(m_pWindow->m_pVideoDriver->SelectedApi);
 
+	PrimitiveMgr->SetVP(&VP);
+
 	int index = PrimitiveMgr->CreateQuad();
+	int indexMesh = PrimitiveMgr->CreateMesh("NuBatman.X");
+
 	QuadInst.CreateInstance(PrimitiveMgr->GetPrimitive(index), &VP);
+	Mesh[0].CreateInstance(PrimitiveMgr->GetPrimitive(index), &VP);
 }
 
 void IDVTestApplication::DestroyAssets() {
