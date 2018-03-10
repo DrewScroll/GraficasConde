@@ -4,7 +4,7 @@
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 void GLMesh::Create(char* t) {
-	SigBase = IDVSig::HAS_TEXCOORDS0;
+	SigBase = IDVSig::HAS_TEXCOORDS0 | IDVSig::HAS_NORMALS;
 
 	char *vsSourceP = file2string("Shaders/VS_Mesh.glsl");
 	char *fsSourceP = file2string("Shaders/FS_Mesh.glsl");
@@ -21,23 +21,28 @@ void GLMesh::Create(char* t) {
 
 	for (int i = 0; i < ParserMesh.Meshes.size(); i++)
 	{
-		glGenBuffers(1, &VB);
-		glBindBuffer(GL_ARRAY_BUFFER, VB);
+		mesh_info tmp;
+		glGenBuffers(1, &tmp.VB_ID);
+		glBindBuffer(GL_ARRAY_BUFFER, tmp.VB_ID);
 		glBufferData(GL_ARRAY_BUFFER, ParserMesh.Meshes[i]->vert * sizeof(MeshVertex), ParserMesh.Meshes[i]->vertices, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		glGenBuffers(1, &IB);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
+		glGenBuffers(1, &tmp.IB_ID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tmp.IB_ID);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (ParserMesh.Meshes[i]->ind * 3) * sizeof(unsigned short), ParserMesh.Meshes[i]->indices, GL_STATIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	//	for (int j = 0; j <ParserMesh.Meshes[i]->totalmaterial; j++)
-	//	{
-	//		glGenBuffers(1, &ParserMesh.Meshes[i]->materials[j]->IB);
-	//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ParserMesh.Meshes[i]->materials[j]->IB);
-	//		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (ParserMesh.Meshes[i]->materials[j]->ind * 3) * sizeof(unsigned short), &ParserMesh.Meshes[i]->materials[j]->indices[0], GL_STATIC_DRAW);
-	//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	//	}
+		for (int j = 0; j < ParserMesh.Meshes[i]->totalmaterial; j++)
+		{
+			subset_info tmp_2;
+			glGenBuffers(1, &tmp_2.IB_ID);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tmp_2.IB_ID);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, (ParserMesh.Meshes[i]->materials[j]->ind * 3) * sizeof(unsigned short), &ParserMesh.Meshes[i]->materials[j]->indices[0], GL_STATIC_DRAW);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			tmp.subInfo.push_back(tmp_2);
+		}
+
+		MeshInfo.push_back(tmp);
 	}
 	XMatIdentity(transform);
 }
@@ -78,15 +83,18 @@ void GLMesh::Draw(float *t, float *vp) {
 
 	for (int i = 0; i < ParserMesh.Meshes.size(); i++)
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, VB);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
+		glBindBuffer(GL_ARRAY_BUFFER, MeshInfo[i].VB_ID);
 
 		glEnableVertexAttribArray(s->vertexAttribLoc);
 		glVertexAttribPointer(s->vertexAttribLoc, 4, GL_FLOAT, GL_FALSE, sizeof(MeshVertex), BUFFER_OFFSET(0));
-		glEnableVertexAttribArray(s->normalAttribLoc);
-		glVertexAttribPointer(s->normalAttribLoc, 4, GL_FLOAT, GL_FALSE, sizeof(MeshVertex), BUFFER_OFFSET(16));
-		glEnableVertexAttribArray(s->uvAttribLoc);
-		glVertexAttribPointer(s->uvAttribLoc, 2, GL_FLOAT, GL_FALSE, sizeof(MeshVertex), BUFFER_OFFSET(32));
+		if (s->normalAttribLoc != -1) {
+			glEnableVertexAttribArray(s->normalAttribLoc);
+			glVertexAttribPointer(s->normalAttribLoc, 4, GL_FLOAT, GL_FALSE, sizeof(MeshVertex), BUFFER_OFFSET(16));
+		}
+		if (s->uvAttribLoc != -1) {
+			glEnableVertexAttribArray(s->uvAttribLoc);
+			glVertexAttribPointer(s->uvAttribLoc, 2, GL_FLOAT, GL_FALSE, sizeof(MeshVertex), BUFFER_OFFSET(32));
+		}
 
 		for (int j = 0; j < ParserMesh.Meshes[i]->materials.size(); j++)
 		{
@@ -96,7 +104,7 @@ void GLMesh::Draw(float *t, float *vp) {
 		//		glBindTexture(GL_TEXTURE_2D, Meshes[i]->materials[j]->diffuse_textID);
 		//		glUniform1i(diffuseAttribLoc, 0);
 		//	}
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ParserMesh.Meshes[i]->materials[j]->IB);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, MeshInfo[i].subInfo[j].IB_ID);
 		//	//glDrawElements(GL_TRIANGLES, Meshes[i]->ind * 3, GL_UNSIGNED_SHORT, 0);
 			glDrawElements(GL_TRIANGLES, ParserMesh.Meshes[i]->materials[j]->ind * 3, GL_UNSIGNED_SHORT, 0);
 		}

@@ -12,6 +12,7 @@
 #include "IDVScene\IDVPrimitive.h"
 #include "IDVUtils\IDVUtils.h"
 #include "IDV_Parser.h"
+#include<vector>
 
 using namespace std;
 
@@ -19,6 +20,17 @@ class GLMesh : public PrimitiveBase {
 public:
 	float FTM[16];
 	
+	struct subset_info{
+		unsigned int IB_ID;
+	};
+
+	struct mesh_info {
+		unsigned int VB_ID;
+		unsigned int IB_ID;
+		std::vector<subset_info> subInfo;
+	};
+
+	std::vector<mesh_info> MeshInfo;
 	char separator;
 	GLMesh() {}
 	void Create() {};

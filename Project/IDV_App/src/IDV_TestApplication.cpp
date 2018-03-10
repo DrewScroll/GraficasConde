@@ -12,11 +12,11 @@ void IDVTestApplication::CreateAssets()
 
 	PrimitiveMgr->SetVP(&VP);
 
-	int index = PrimitiveMgr->CreateQuad();
+	//int index = PrimitiveMgr->CreateQuad();
 	int indexMesh = PrimitiveMgr->CreateMesh("NuBatman.X");
 
-	QuadInst.CreateInstance(PrimitiveMgr->GetPrimitive(index), &VP);
-	Mesh[0].CreateInstance(PrimitiveMgr->GetPrimitive(index), &VP);
+	//QuadInst.CreateInstance(PrimitiveMgr->GetPrimitive(index), &VP);
+	Mesh[0].CreateInstance(PrimitiveMgr->GetPrimitive(indexMesh), &VP);
 }
 
 void IDVTestApplication::DestroyAssets() {
@@ -31,7 +31,8 @@ void IDVTestApplication::OnUpdate() {
 void IDVTestApplication::OnDraw(){
 	m_pWindow->m_pVideoDriver->Clear();
 
-	QuadInst.Draw();
+	//QuadInst.Draw();
+	Mesh->Draw();
 
 	m_pWindow->m_pVideoDriver->SwapBuffers();
 }

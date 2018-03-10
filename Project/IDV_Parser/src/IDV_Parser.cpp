@@ -63,7 +63,7 @@ void Parser::Lectura(const char * NombreArchivo)
 			if (findTexture != -1)
 			{
 				Archivo >> XMesh->vert >> separator;
-				cout << "texture vertices: " << XMesh->vert;
+				cout << "texture vertices: " << XMesh->vert << endl;
 				for (int i = 0; i < XMesh->vert; i++)
 				{
 					Archivo >> XMesh->vertices[i].s >> separator >> XMesh->vertices[i].t >> separator >> separator;

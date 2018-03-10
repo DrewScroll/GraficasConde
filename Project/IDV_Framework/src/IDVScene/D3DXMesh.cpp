@@ -9,8 +9,8 @@ extern ComPtr<ID3D11DeviceContext>     D3D11DeviceContext;
 void D3DXMesh::Create(char* t) {
 	SigBase = IDVSig::HAS_TEXCOORDS0;
 
-	char *vsSourceP = file2string("VS_Mesh.glsl");
-	char *fsSourceP = file2string("FS_Mesh.glsl");
+	char *vsSourceP = file2string("Shaders/VS_Mesh.hlsl");
+	char *fsSourceP = file2string("Shaders/FS_Mesh.hlsl");
 
 	std::string vstr = std::string(vsSourceP);
 	std::string fstr = std::string(fsSourceP);
@@ -51,10 +51,10 @@ void D3DXMesh::Create(char* t) {
 		}
 
 		bdesc = { 0 };
-		bdesc.ByteWidth = 6 * sizeof(USHORT);
+		bdesc.ByteWidth = ParserMesh.Meshes[i]->ind * sizeof(USHORT);
 		bdesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 
-		subData = { ParserMesh.Meshes[i]->indices, 0, 0 };
+		subData = { &ParserMesh.Meshes[i]->indices[0], 0, 0 };
 
 		hr = D3D11Device->CreateBuffer(&bdesc, &subData, &IB);
 		if (hr != S_OK) {
@@ -110,21 +110,27 @@ void D3DXMesh::Draw(float *t, float *vp) {
 	CnstBuffer.World = transform;
 	CnstBuffer.WorldView = transform;
 
-	D3D11DeviceContext->VSSetShader(s->pVS.Get(), 0, 0);
-	D3D11DeviceContext->PSSetShader(s->pFS.Get(), 0, 0);
-	D3D11DeviceContext->IASetInputLayout(s->Layout.Get());
+	for (int i = 0; i < ParserMesh.Meshes.size(); ++i)
+	{
+		D3D11DeviceContext->IASetVertexBuffers(0, 1, VB.GetAddressOf(), &stride, &offset);
+		for (int j = 0; i < ParserMesh.totMat; ++i)
+		{
 
-	D3D11DeviceContext->UpdateSubresource(pd3dConstantBuffer.Get(), 0, 0, &CnstBuffer, 0, 0);
-	D3D11DeviceContext->VSSetConstantBuffers(0, 1, pd3dConstantBuffer.GetAddressOf());
-	D3D11DeviceContext->PSSetConstantBuffers(0, 1, pd3dConstantBuffer.GetAddressOf());
+			D3D11DeviceContext->VSSetShader(s->pVS.Get(), 0, 0);
+			D3D11DeviceContext->PSSetShader(s->pFS.Get(), 0, 0);
+			D3D11DeviceContext->IASetInputLayout(s->Layout.Get());
 
-	D3D11DeviceContext->IASetIndexBuffer(IB.Get(), DXGI_FORMAT_R16_UINT, 0);
-	D3D11DeviceContext->IASetVertexBuffers(0, 1, VB.GetAddressOf(), &stride, &offset);
+			D3D11DeviceContext->UpdateSubresource(pd3dConstantBuffer.Get(), 0, 0, &CnstBuffer, 0, 0);
+			D3D11DeviceContext->VSSetConstantBuffers(0, 1, pd3dConstantBuffer.GetAddressOf());
+			D3D11DeviceContext->PSSetConstantBuffers(0, 1, pd3dConstantBuffer.GetAddressOf());
 
-	D3D11DeviceContext->PSSetSamplers(0, 1, pSampler.GetAddressOf());
-	D3D11DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	D3D11DeviceContext->DrawIndexed(6, 0, 0);
+			D3D11DeviceContext->IASetIndexBuffer(IB.Get(), DXGI_FORMAT_R16_UINT, 0);
 
+			D3D11DeviceContext->PSSetSamplers(0, 1, pSampler.GetAddressOf());
+			D3D11DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			D3D11DeviceContext->DrawIndexed(ParserMesh.Meshes[i]->ind, 0, 0);
+		}
+	}
 }
 
 void D3DXMesh::Destroy() {
