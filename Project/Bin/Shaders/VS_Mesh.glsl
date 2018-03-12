@@ -11,5 +11,5 @@ uniform highp mat4 World;
 void main(){
 	vecTransformed = normalize(mat3(World)*vec3(Normal));
 	vecUVCoords = UV;
-	gl_Position = Vertex;
+	gl_Position = WVP*Vertex;
 }

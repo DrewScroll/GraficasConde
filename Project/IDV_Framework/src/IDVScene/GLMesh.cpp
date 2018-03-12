@@ -75,10 +75,18 @@ void GLMesh::Draw(float *t, float *vp) {
 	}
 	//XMATRIX44 WVP = transform * VP;
 
+	XMATRIX44 Scale;
+	XMATRIX44 View;
+	XMATRIX44 Projection;
+	XMatViewLookAtLH(View, XVECTOR3(0.0f, 0.0f, -10.0f), XVECTOR3(0.0f, 0.0f, 1.0f), XVECTOR3(0.0f, 1.0f, 0.0f));
+	XMatPerspectiveLH(Projection, Deg2Rad(60.0f), 1280.0f / 720.0f, 0.1f, 100.0f);
+	XMatScaling(Scale, 0.15f, 0.15f, 0.15f);
+	XMATRIX44 WVP = Scale*View*Projection;
+
 	glUseProgram(s->ShaderProg);
 
 	glUniformMatrix4fv(s->matWorldUniformLoc, 1, GL_FALSE, &transform.m[0][0]);
-	glUniformMatrix4fv(s->matWorldViewProjUniformLoc, 1, GL_FALSE, &transform.m[0][0]);
+	glUniformMatrix4fv(s->matWorldViewProjUniformLoc, 1, GL_FALSE, &WVP.m[0][0]);
 	glUniformMatrix4fv(s->matWorldViewUniformLoc, 1, GL_FALSE, &WV.m[0][0]);
 
 	for (int i = 0; i < ParserMesh.Meshes.size(); i++)
