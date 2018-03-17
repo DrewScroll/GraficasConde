@@ -13,7 +13,7 @@ void IDVTestApplication::CreateAssets()
 	PrimitiveMgr->SetVP(&VP);
 
 	//int index = PrimitiveMgr->CreateQuad();
-	int indexMesh = PrimitiveMgr->CreateMesh("NuBatman.X");
+	int indexMesh = PrimitiveMgr->CreateMesh("CerdoNuevo.X");
 
 	//QuadInst.CreateInstance(PrimitiveMgr->GetPrimitive(index), &VP);
 	Mesh[0].CreateInstance(PrimitiveMgr->GetPrimitive(indexMesh), &VP);

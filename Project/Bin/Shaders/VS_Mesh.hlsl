@@ -6,7 +6,7 @@ cbuffer ConstantBuffer{
 
 struct VS_INPUT{
     float4 position : POSITION;
-	float4 hnormal : NORMAL;
+	float4 normal : NORMAL;
     float2 texture0 : TEXCOORD;
 };
 
@@ -18,7 +18,7 @@ struct VS_OUTPUT{
 
 VS_OUTPUT VS( VS_INPUT input ){
     VS_OUTPUT OUT;
-    OUT.hposition = mul(WVP, input.position);
+    OUT.hposition = input.position;
 	OUT.hnormal = input.normal;
     OUT.texture0  = input.texture0;
 	return OUT;

@@ -29,6 +29,18 @@ public:
 	};
 
 	float FTM[16];
+
+	struct subset_info {
+		ComPtr<ID3D11Buffer> IB_ID;
+	};
+
+	struct mesh_info {
+		ComPtr<ID3D11Buffer> VB_ID;
+		ComPtr<ID3D11Buffer> IB_ID;
+		std::vector<subset_info> subInfo;
+	};
+
+	std::vector<mesh_info> MeshInfo;
 	char separator;
 	void Create() {};
 	void Create(char * t);
@@ -46,8 +58,6 @@ public:
 
 	/*vector <MeshVertex> vertices;
 	vector <unsigned short>	indices;*/
-	ComPtr<ID3D11Buffer>			VB;
-	ComPtr<ID3D11Buffer>			IB;
 	ComPtr<ID3D11Buffer>        pd3dConstantBuffer;
 	ComPtr<ID3D11SamplerState>  pSampler;
 
