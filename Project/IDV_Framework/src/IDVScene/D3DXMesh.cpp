@@ -112,13 +112,24 @@ void D3DXMesh::Draw(float *t, float *vp) {
 	UINT stride = sizeof(MeshVertex);
 
 	XMATRIX44 VP;
+	XMATRIX44 WV;
+
 	for (int i = 0; i < 16; i++)
 	{
 		VP.mat[i] = vp[i];
+		WV.mat[i] = vp[i];
 	}
-	XMATRIX44 WVP = transform * VP;
+	//XMATRIX44 WVP = transform * VP;
 
-	CnstBuffer.WVP = transform;
+	XMATRIX44 Scale;
+	XMATRIX44 View;
+	XMATRIX44 Projection;
+	XMatViewLookAtLH(View, XVECTOR3(0.0f, 0.0f, -10.0f), XVECTOR3(0.0f, 0.0f, 1.0f), XVECTOR3(0.0f, 1.0f, 0.0f));
+	XMatPerspectiveLH(Projection, Deg2Rad(60.0f), 1280.0f / 720.0f, 0.1f, 100.0f);
+	XMatScaling(Scale, 0.15f, 0.15f, 0.15f);
+	XMATRIX44 WVP = Scale * View*Projection;
+
+	CnstBuffer.WVP = WVP;
 	CnstBuffer.World = transform;
 	CnstBuffer.WorldView = transform;
 
