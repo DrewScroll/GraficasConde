@@ -3,8 +3,7 @@
 #include <IDVWindow/IDVWin32Manager.h>
 #include <IDV_TestApplication.h>
 
-#include <IDV_Parser.h>
-#include <IDV_Maths.h>
+
 
 IDVBaseApplication *g_pApplication = 0;
 IDVBaseWindow	   *g_pWindow = 0;
