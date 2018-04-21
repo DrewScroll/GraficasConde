@@ -2,7 +2,6 @@
 #include <IDVScene/IDVGLQuad.h>
 #include <IDVScene/IDVD3DQuad.h>
 
-
 PrimitiveBase*	PrimitiveManager::GetPrimitive(unsigned int index) {
 	if (index >= primitives.size())
 		return 0;

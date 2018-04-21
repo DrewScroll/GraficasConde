@@ -84,6 +84,15 @@
     <ClCompile Include="src\IDVScene\D3DXMesh.cpp">
       <Filter>Source Files\IDVScene</Filter>
     </ClCompile>
+    <ClCompile Include="src\IDVUtils\Camera.cpp">
+      <Filter>Source Files\IDVUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IDVUtils\IDVTimer.cpp">
+      <Filter>Source Files\IDVUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IDVUtils\InputManager.cpp">
+      <Filter>Source Files\IDVUtils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="incl\IDVBase\IDVCoreBase.h">
@@ -136,6 +145,15 @@
     </ClInclude>
     <ClInclude Include="incl\IDVScene\D3DXMesh.h">
       <Filter>Header Files\IDVScene</Filter>
+    </ClInclude>
+    <ClInclude Include="incl\IDVUtils\Camera.h">
+      <Filter>Header Files\IDVUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="incl\IDVUtils\IDVTimer.h">
+      <Filter>Header Files\IDVUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="incl\IDVUtils\InputManager.h">
+      <Filter>Header Files\IDVUtils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

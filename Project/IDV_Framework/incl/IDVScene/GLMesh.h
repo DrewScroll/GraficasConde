@@ -11,8 +11,7 @@
 
 #include "IDVScene\IDVPrimitive.h"
 #include "IDVUtils\IDVUtils.h"
-#include "IDV_Parser.h"
-#include<vector>
+#include <IDV_Parser.h>
 
 using namespace std;
 

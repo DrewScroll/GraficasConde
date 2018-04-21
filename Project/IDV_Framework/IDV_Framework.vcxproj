@@ -26,7 +26,10 @@
     <ClCompile Include="src\IDVScene\IDVPrimitiveInstance.cpp" />
     <ClCompile Include="src\IDVScene\IDVPrimitiveManager.cpp" />
     <ClCompile Include="src\IDVScene\IDVSceneProp.cpp" />
+    <ClCompile Include="src\IDVUtils\Camera.cpp" />
+    <ClCompile Include="src\IDVUtils\IDVTimer.cpp" />
     <ClCompile Include="src\IDVUtils\IDVUtils.cpp" />
+    <ClCompile Include="src\IDVUtils\InputManager.cpp" />
     <ClCompile Include="src\IDVVideo\IDVBaseDriver.cpp" />
     <ClCompile Include="src\IDVVideo\IDVD3DXDriver.cpp" />
     <ClCompile Include="src\IDVVideo\IDVD3DXShader.cpp" />
@@ -45,7 +48,10 @@
     <ClInclude Include="incl\IDVScene\IDVPrimitiveInstance.h" />
     <ClInclude Include="incl\IDVScene\IDVPrimitiveManager.h" />
     <ClInclude Include="incl\IDVScene\IDVSceneProp.h" />
+    <ClInclude Include="incl\IDVUtils\Camera.h" />
+    <ClInclude Include="incl\IDVUtils\IDVTimer.h" />
     <ClInclude Include="incl\IDVUtils\IDVUtils.h" />
+    <ClInclude Include="incl\IDVUtils\InputManager.h" />
     <ClInclude Include="incl\IDVVideo\IDVBaseDriver.h" />
     <ClInclude Include="incl\IDVVideo\IDVD3DXDriver.h" />
     <ClInclude Include="incl\IDVVideo\IDVD3DXShader.h" />
