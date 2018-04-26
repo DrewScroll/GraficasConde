@@ -15,6 +15,7 @@ ComPtr<ID3D11DeviceContext>     D3D11DeviceContext; // Context to set and manipu
 ComPtr<ID3D11RenderTargetView>  D3D11RenderTargetView;  // View into the back buffer
 ComPtr<ID3D11DepthStencilView>  D3D11DepthStencilTargetView; // View into the depth buffer
 ComPtr<ID3D11Texture2D>			D3D11DepthTex;	// Actual depth buffer texture
+ComPtr<ID3D11RasterizerState>   D3D11RasterizerState;
 
 void IDVD3DXDriver::InitDriver(){
 	//	Descriptor of the Back Buffer
@@ -100,6 +101,23 @@ void IDVD3DXDriver::InitDriver(){
 	viewport.MaxDepth = 1;
 
 	D3D11DeviceContext->RSSetViewports(1, &viewport);
+
+	
+	D3D11_RASTERIZER_DESC rasterizerState;
+	rasterizerState.FillMode = D3D11_FILL_SOLID;
+	rasterizerState.CullMode = D3D11_CULL_FRONT;
+	rasterizerState.FrontCounterClockwise = true;
+	rasterizerState.DepthBias = false;
+	rasterizerState.DepthBiasClamp = 0;
+	rasterizerState.SlopeScaledDepthBias = 0;
+	rasterizerState.DepthClipEnable = true;
+	rasterizerState.ScissorEnable = false;
+	rasterizerState.MultisampleEnable = false;
+	rasterizerState.AntialiasedLineEnable = false;
+
+	D3D11Device->CreateRasterizerState(&rasterizerState,&D3D11RasterizerState);
+
+	D3D11DeviceContext->RSSetState(D3D11RasterizerState.Get());
 }
 
 void IDVD3DXDriver::CreateSurfaces(){

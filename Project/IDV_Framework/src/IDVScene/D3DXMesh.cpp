@@ -61,7 +61,7 @@ void D3DXMesh::Create(char* t) {
 		{
 			subset_info tmp_2;
 			bdesc = { 0 };
-			bdesc.ByteWidth = ParserMesh.Meshes[i]->materials[j]->ind * sizeof(unsigned short);
+			bdesc.ByteWidth = ParserMesh.Meshes[i]->materials[j]->ind * sizeof(unsigned short) * 3;
 			bdesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 			subData = { &ParserMesh.Meshes[i]->materials[j]->indices[0], 0, 0 };
 
@@ -151,7 +151,7 @@ void D3DXMesh::Draw(float *t, float *vp) {
 
 			D3D11DeviceContext->PSSetSamplers(0, 1, pSampler.GetAddressOf());
 			D3D11DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			D3D11DeviceContext->DrawIndexed(ParserMesh.Meshes[i]->materials[j]->ind, 0, 0);
+			D3D11DeviceContext->DrawIndexed(ParserMesh.Meshes[i]->materials[j]->ind * 3, 0, 0);
 		}
 	}
 }
